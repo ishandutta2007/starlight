@@ -67,11 +67,13 @@ Starlight offre une prise en charge intégrée des sites multilingues, y compris
 
 </Steps>
 
-### Utiliser une racine locale
+Pour les scénarios i18n plus avancés, Starlight prend également en compte la configuration de l'internationalisation à l'aide de l'option de [configuration `i18n` d'Astro](https://docs.astro.build/fr/guides/internationalization/#configure-i18n-routing).
 
-Vous pouvez utiliser une “racine” locale pour servir une langue sans aucun préfixe i18n dans son chemin. Par exemple, si l'anglais est votre racine locale, le chemin d'une page en anglais ressemblera à `/about` au lieu de `/en/about`.
+### Utiliser une locale racine
 
-Pour définir une racine locale, utilisez la clé `root` dans votre configuration `locales`. Si la racine locale est aussi la locale par défaut de votre contenu, supprimez `defaultLocale` ou donnez-lui la valeur `'root''.
+Vous pouvez utiliser une locale « racine » pour servir une langue sans aucun préfixe i18n dans son chemin. Par exemple, si l'anglais est votre locale racine, le chemin d'une page en anglais ressemblera à `/about` au lieu de `/en/about`.
+
+Pour définir une locale racine, utilisez la clé `root` dans votre configuration `locales`. Si la locale racine est aussi la locale par défaut de votre contenu, supprimez `defaultLocale` ou donnez-lui la valeur `'root'`.
 
 ```js {9,11-14}
 // astro.config.mjs
@@ -86,7 +88,7 @@ export default defineConfig({
 			locales: {
 				root: {
 					label: 'English',
-					lang: 'en', // lang est nécessaire pour les locales de la racine
+					lang: 'en', // lang est nécessaire pour les locales racine
 				},
 				'zh-cn': {
 					label: '简体中文',
@@ -98,7 +100,7 @@ export default defineConfig({
 });
 ```
 
-Lorsque vous utilisez une locale `root`, gardez les pages pour cette langue directement dans `src/content/docs/` au lieu d'un dossier dédié à la langue. Par exemple, voici les fichiers de la page d'accueil pour l'anglais et le chinois en utilisant la configuration ci-dessus :
+Lorsque vous utilisez une locale racine avec la clé `root`, conservez les pages de cette langue directement dans `src/content/docs/` au lieu d'un dossier dédié à cette langue. Par exemple, voici les fichiers de la page d'accueil pour l'anglais et le chinois en utilisant la configuration ci-dessus :
 
 <FileTree>
 
@@ -142,6 +144,34 @@ Cela vous permet de remplacer la langue par défaut de Starlight sans activer d'
 Starlight s'attend à ce que vous créiez des pages équivalentes dans toutes vos langues. Par exemple, si vous avez un fichier `en/about.md`, créez un `about.md` pour chaque autre langue que vous supportez. Cela permet à Starlight de fournir un contenu de repli automatique pour les pages qui n'ont pas encore été traduites.
 
 Si une traduction n'est pas encore disponible pour une langue, Starlight affichera aux lecteurs le contenu de cette page dans la langue par défaut (définie via `defaultLocale`). Par exemple, si vous n'avez pas encore créé de version française de votre page À propos et que votre langue par défaut est l'anglais, les visiteurs de `/fr/about` verront le contenu anglais de `/en/about` avec un avis indiquant que cette page n'a pas encore été traduite. Cela vous permet d'ajouter du contenu dans votre langue par défaut et de le traduire progressivement lorsque vos traducteurs en ont le temps.
+
+## Traduire le titre du site
+
+Par défaut, Starlight utilisera le même titre de site pour toutes les langues.
+Si vous avez besoin de personnaliser le titre pour chaque langue, vous pouvez passer un objet à [`title`](/fr/reference/configuration/#title-obligatoire) dans les options de Starlight :
+
+```diff lang="js"
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+
+export default defineConfig({
+	integrations: [
+		starlight({
+-			title: 'Ma documentation',
++			title: {
++				fr: 'Ma documentation',
++				'zh-CN': '我的文档',
++			},
+			defaultLocale: 'fr',
+			locales: {
+				fr: { label: 'Français' },
+				'zh-cn': { label: '简体中文', lang: 'zh-CN' },
+			},
+		}),
+	],
+});
+```
 
 ## Traduire l'interface utilisateur de Starlight
 
@@ -243,3 +273,17 @@ export const collections = {
 ```
 
 Consultez [« Définir un schéma de collection de contenus »](https://docs.astro.build/fr/guides/content-collections/#defining-a-collection-schema) dans la documentation d'Astro pour en savoir plus sur les schémas de collection de contenus.
+
+## Accès aux paramètres régionaux
+
+Vous pouvez utiliser [`Astro.currentLocale`](https://docs.astro.build/fr/reference/api-reference/#astrocurrentlocale) pour lire les paramètres régionaux et linguistiques actuels dans les composants `.astro`.
+
+L'exemple suivant lit les paramètres régionaux actuels et les utilise pour générer un lien vers une page d'information dans la même langue :
+
+```astro
+---
+// src/components/AboutLink.astro
+---
+
+<a href={`/${Astro.currentLocale}/about`}>À propos</a>
+```

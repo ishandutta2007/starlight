@@ -266,6 +266,21 @@ pagefind: false
 ---
 ```
 
+### `draft`
+
+**타입:** `boolean`  
+**기본값:** `false`
+
+이 페이지를 초안으로 간주하여 [프로덕션 빌드](https://docs.astro.build/ko/reference/cli-reference/#astro-build) 및 [자동 생성된 링크 그룹](/ko/guides/sidebar/#자동-생성-그룹)에 포함하지 않을지 여부를 설정합니다. 페이지를 초안으로 표시하고 개발 중에만 표시하려면 `true`로 설정하세요.
+
+```md
+---
+# src/content/docs/example.md
+# 프로덕션 빌드에서 이 페이지 제외
+draft: true
+---
+```
+
 ### `sidebar`
 
 **타입:** [`SidebarConfig`](#sidebarconfig)
@@ -335,7 +350,7 @@ sidebar:
 
 **타입:** <code>string | <a href="/ko/reference/configuration/#badgeconfig">BadgeConfig</a></code>
 
-자동 생성된 링크 그룹에 표시될 때 사이드바의 페이지에 배지를 추가합니다. 문자열을 사용하면 배지가 기본 강조 색상으로 표시됩니다. 선택적으로, `text` 및 `variant`필드가 포함된 [BadgeConfig 객체](/ko/reference/configuration/#badgeconfig)를 전달하여 배지를 사용자가 원하는대로 변경할 수 있습니다.
+자동 생성된 링크 그룹에 표시될 때 사이드바의 페이지에 배지를 추가합니다. 문자열을 사용하면 배지가 기본 강조 색상으로 표시됩니다. 선택적으로, `text`, `variant`, `class` 필드가 포함된 [BadgeConfig 객체](/ko/reference/configuration/#badgeconfig)를 전달하여 배지를 사용자가 원하는대로 변경할 수 있습니다.
 
 ```md
 ---

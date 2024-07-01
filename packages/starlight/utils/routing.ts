@@ -9,6 +9,7 @@ import {
 	slugToParam,
 } from './slugs';
 import { validateLogoImports } from './validateLogoImports';
+import { BuiltInDefaultLocale } from './i18n';
 
 // Validate any user-provided logos imported correctly.
 // We do this here so all pages trigger it and at the top level so it runs just once.
@@ -45,12 +46,15 @@ interface Path extends GetStaticPathsItem {
 const normalizeIndexSlug = (slug: string) => (slug === 'index' ? '' : slug);
 
 /** All entries in the docs content collection. */
-const docs: StarlightDocsEntry[] = ((await getCollection('docs')) ?? []).map(
-	({ slug, ...entry }) => ({
-		...entry,
-		slug: normalizeIndexSlug(slug),
-	})
-);
+const docs: StarlightDocsEntry[] = (
+	(await getCollection('docs', ({ data }) => {
+		// In production, filter out drafts.
+		return import.meta.env.MODE !== 'production' || data.draft === false;
+	})) ?? []
+).map(({ slug, ...entry }) => ({
+	...entry,
+	slug: normalizeIndexSlug(slug),
+}));
 
 function getRoutes(): Route[] {
 	const routes: Route[] = docs.map((entry) => ({
@@ -83,7 +87,7 @@ function getRoutes(): Route[] {
 					slug,
 					id,
 					isFallback: true,
-					lang: localeConfig.lang || 'en',
+					lang: localeConfig.lang || BuiltInDefaultLocale.lang,
 					locale,
 					dir: localeConfig.dir,
 					entryMeta: slugToLocaleData(fallback.slug),

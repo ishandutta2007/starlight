@@ -18,10 +18,12 @@
   "page.lastUpdated": "Last updated:",
   "page.previousLink": "Previous",
   "page.nextLink": "Next",
+  "page.draft": "This content is a draft and will not be included in production builds.",
   "404.text": "Page not found. Check the URL or try using the search bar.",
   "aside.note": "Note",
   "aside.tip": "Tip",
   "aside.caution": "Caution",
   "aside.danger": "Danger",
-  "fileTree.directory": "Directory"
+  "fileTree.directory": "Directory",
+  "builtWithStarlight.label": "Built with Starlight"
 }

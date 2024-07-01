@@ -268,6 +268,21 @@ pagefind: false
 ---
 ```
 
+### `draft`
+
+**Type :** `boolean`  
+**Par défaut :** `false`
+
+Définit si cette page doit être considérée comme une ébauche et ne pas être incluse dans les [déploiements en production](https://docs.astro.build/fr/reference/cli-reference/#astro-build) et les [groupes de liens générés automatiquement](/fr/guides/sidebar/#groupes-générés-automatiquement). Définissez la valeur à `true` pour marquer une page comme une ébauche et la rendre visible uniquement pendant le développement.
+
+```md
+---
+# src/content/docs/exemple.md
+# Exclure cette page des déploiements en production
+draft: true
+---
+```
+
 ### `sidebar`
 
 **Type :** [`SidebarConfig`](#sidebarconfig)
@@ -340,7 +355,7 @@ sidebar:
 
 Ajoute un badge à la page dans la barre latérale lorsqu'elle est affichée dans un groupe de liens généré automatiquement.
 Lors de l'utilisation d'une chaîne de caractères, le badge sera affiché avec une couleur d'accentuation par défaut.
-Passez éventuellement un [objet `BadgeConfig`](/fr/reference/configuration/#badgeconfig) avec les propriétés `text` et `variant` pour personnaliser le badge.
+Passez éventuellement un [objet `BadgeConfig`](/fr/reference/configuration/#badgeconfig) avec les propriétés `text`, `variant`, et `class` pour personnaliser le badge.
 
 ```md
 ---
